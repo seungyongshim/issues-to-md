@@ -3,7 +3,8 @@
     "issues-to-md": {
       "commandName": "Project",
       "environmentVariables": {
-        "DOTNET_Config__OAuth": "test"
+        "App__OAuth": "test",
+        "OAuth": "test1"
       }
     }
   }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace issues_to_md
@@ -8,13 +9,18 @@ namespace issues_to_md
         private static void Main(string[] args)
         {
             Host.CreateDefaultBuilder()
-                .ConfigureServices(sc =>
+                .ConfigureServices(services =>
                 {
-                    sc.AddOptions<ConfigOptions>();
-                    sc.AddSingleton<IssueService>();
+                    var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
+
+                    services.AddOptions();
+                    services.Configure<AppOptions>(configuration.GetSection("App"));
+                    services.AddSingleton<IssueService>();
                 })
                 .Build()
-                .Services.GetService<IssueService>().Run();
+                .Services
+                .GetService<IssueService>()
+                .Run();
         }
     }
 }
